@@ -22,7 +22,7 @@ def plotContour( xgrid, ygrid, zgrid, xlabel, ylabel, zlabel, title, outputFile,
     fig =  plt.figure()
     if(len(zlim)==0):
         zlim = zgrid.min().min(), zgrid.max().max()
-    plt.pcolor(xgrid, ygrid, zgrid.T, vmin=zlim[0], vmax=zlim[1] ) 
+    plt.pcolormesh(xgrid, ygrid, zgrid.T,vmin=zlim[0], vmax=zlim[1] ) 
     cb = plt.colorbar(orientation='horizontal',pad=0.2)
     cb.set_label(zlabel)
     plt.ylabel( ylabel )
@@ -31,6 +31,8 @@ def plotContour( xgrid, ygrid, zgrid, xlabel, ylabel, zlabel, title, outputFile,
     plt.gca().invert_yaxis()
     plt.yticks(np.array([1000.0, 100.0, 10.0, 1.0, 0.1]),['1000.0','100.0','10.0','1.0','0.1'])
     #plt.tight_layout() 
+    print('Saving {}'.format(outputFile))
+    #plt.ylim([ygrid.max().max(),ygrid.min().min()])
     fig.suptitle(title)
     plt.savefig(outputFile, dpi=figureResolution)
     plt.close()
