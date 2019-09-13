@@ -25,6 +25,7 @@ def basicLine(xvals, yvals, xaxisLabel, yaxisLabel, plotTitle, outputFile, legen
     plt.ylabel(yaxisLabel)
     if( len(legendItems)>0 ): 
         plt.legend(legendItems)
+    print('Saving: '+outputFile)
     plt.savefig(outputFile)
     plt.close()
  
