@@ -6,7 +6,7 @@ import matplotlib.colors as colors
 from cycler import cycler
 import matplotlib.cm as mplcm
 
-def plotContour( xgrid, ygrid, zgrid, xlabel, ylabel, zlabel, title, outputFile, zlim = [],  figureResolution = 100):
+def plotContour( xgrid, ygrid, zgrid, xlabel, ylabel, zlabel, title, outputFile, zlim = [], cmap='bwr', figureResolution = 100):
     """
     Plot a color contour plot. 
     An example using Jacobians:
@@ -22,7 +22,7 @@ def plotContour( xgrid, ygrid, zgrid, xlabel, ylabel, zlabel, title, outputFile,
     fig =  plt.figure()
     if(len(zlim)==0):
         zlim = zgrid.min().min(), zgrid.max().max()
-    plt.pcolormesh(xgrid, ygrid, zgrid.T,vmin=zlim[0], vmax=zlim[1] ) 
+    plt.pcolormesh(xgrid, ygrid, zgrid.T,vmin=zlim[0], vmax=zlim[1], cmap=cmap ) 
     cb = plt.colorbar(orientation='horizontal',pad=0.2)
     cb.set_label(zlabel)
     plt.ylabel( ylabel )
