@@ -29,7 +29,7 @@ def plotContour( xgrid, ygrid, zgrid, xlabel, ylabel, zlabel, title, outputFile,
     plt.xlabel( xlabel )
     plt.gca().set_yscale('log')
     plt.gca().invert_yaxis()
-    plt.yticks(np.array([1000.0, 100.0, 10.0, 1.0, 0.1]),['1000.0','100.0','10.0','1.0','0.1'])
+    plt.yticks(np.array([1100.0,1000.0, 100.0, 10.0, 1.0, 0.1, 0.01, 0.001]),['','1000.0','100.0','10.0','1.0','0.1','0.01','0.001'])
     #plt.tight_layout() 
     print('Saving {}'.format(outputFile))
     #plt.ylim([ygrid.max().max(),ygrid.min().min()])
