@@ -6,7 +6,7 @@ import matplotlib.colors as colors
 from cycler import cycler
 import matplotlib.cm as mplcm
 
-def plotContour( xgrid, ygrid, zgrid, xlabel, ylabel, zlabel, title, outputFile, zlim = [], cmap='bwr', figureResolution = 100):
+def plotContour( xgrid, ygrid, zgrid, xlabel, ylabel, zlabel, title, outputFile, zlim = [], xlim =[], cmap='bwr', figureResolution = 100):
     """
     Plot a color contour plot. 
     An example using Jacobians:
@@ -29,7 +29,8 @@ def plotContour( xgrid, ygrid, zgrid, xlabel, ylabel, zlabel, title, outputFile,
     plt.xlabel( xlabel )
     plt.gca().set_yscale('log')
     plt.gca().invert_yaxis()
-    plt.yticks(np.array([1100.0,1000.0, 100.0, 10.0, 1.0, 0.1, 0.01, 0.001]),['','1000.0','100.0','10.0','1.0','0.1','0.01','0.001'])
+    if(len(xlim)>0): plt.xlim(xlim)
+    plt.yticks(np.array([1100.0,1000.0, 100.0, 10.0, 1.0, 0.1 ]),['','1000.0','100.0','10.0','1.0','0.1',])
     #plt.tight_layout() 
     print('Saving {}'.format(outputFile))
     #plt.ylim([ygrid.max().max(),ygrid.min().min()])
@@ -37,7 +38,7 @@ def plotContour( xgrid, ygrid, zgrid, xlabel, ylabel, zlabel, title, outputFile,
     plt.savefig(outputFile, dpi=figureResolution)
     plt.close()
 
-def plotContourLabelIdx( xgrid, ygrid, zgrid, xlabel, ylabel, title, outputFile, zlim = [],  figureResolution = 100):
+def plotContourLabelIdx( xgrid, ygrid, zgrid, xlabel, ylabel, zlabel, title, outputFile, zlim = [], cmap='bwr', figureResolution = 100):
     """
     Plot a color contour plot. 
     An example using Jacobians:
@@ -51,19 +52,23 @@ def plotContourLabelIdx( xgrid, ygrid, zgrid, xlabel, ylabel, title, outputFile,
 
     """
     fig = plt.figure()
-    plt.pcolor(np.arange(len(xgrid)+1), ygrid, zgrid.T ) 
-    plt.colorbar()
+    if(len(zlim)==0):
+        zlim = zgrid.min().min(), zgrid.max().max()
+    plt.pcolormesh(np.arange(len(xgrid)+1), ygrid, zgrid.T, vmin=zlim[0], vmax=zlim[1], cmap=cmap ) 
+    cb = plt.colorbar(orientation='horizontal', pad=0.35)
+    cb.set_label( zlabel ) 
     plt.ylabel( ylabel )
     plt.xlabel( xlabel )
     plt.gca().set_yscale('log')
     plt.gca().invert_yaxis()
     plt.xticks(np.arange(len(xgrid)), xgrid, rotation='vertical')
-    plt.yticks(np.array([1000.0, 100.0, 10.0, 1.0, 0.1]),['1000.0','100.0','10.0','1.0','0.1'])
+    plt.yticks(np.array([1100.0, 1000.0, 100.0, 10.0, 1.0, 0.1]),['','1000.0','100.0','10.0','1.0','0.1'])
     #plt.tight_layout() 
     fig.suptitle(title)
+    print('Saving {}'.format(outputFile))
     plt.savefig(outputFile, dpi=figureResolution)
     plt.close()
-def plotLines ( xgrid, ygrid, xlabel, ylabel, legendList, title, outputFile, xlim = [], legendFont = 6, legendColumns = 3, figureResolution = 100 ):
+def plotLines ( xgrid, ygrid, xlabel, ylabel, legendList, title, outputFile, xlim = [], ylim=[], legendFont = 6, legendColumns = 3, figureResolution = 100 ):
     """
     Plot a line plot of profiles;
     An example using Jacobians:
@@ -89,11 +94,15 @@ def plotLines ( xgrid, ygrid, xlabel, ylabel, legendList, title, outputFile, xli
         plt.plot( xgrid[i,:], ygrid )
     plt.gca().set_yscale('log')
     plt.gca().invert_yaxis()
+    if(len(ylim)>0):
+        plt.gca().set_ylim(ylim[0],ylim[1])
 
     # set limits if speficied.
     if(len(xlim)>0):
         plt.gca().set_xlim(xlim[0],xlim[1])
+
     # set static pressure limits.
+    plt.gca().invert_yaxis()
     plt.yticks(np.array([1000.0, 100.0, 10.0, 1.0, 0.1]),['1000.0','100.0','10.0','1.0','0.1'])
     plt.legend(legendList, fontsize=legendFont,  ncol=legendColumns)
     plt.ylabel(ylabel)
