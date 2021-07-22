@@ -40,13 +40,13 @@ def plotMap(lat, lon, data, title, graphicName, plotRange = None, units='', colo
     # come up with normalization for data.
     norm = matplotlib.colors.Normalize(vmin=plotRange[0], vmax=plotRange[1]) #Nomalize color range to match set data range
     # plot scatter plot with data according to colormap and normalization specified
-    ax1.scatter(lon, lat, c=data, cmap = colorScheme, norm=norm, s=10, marker="o", edgecolors='none', transform=ccrs.PlateCarree())
+    ax1.scatter(lon, lat, c=data, cmap = plt.get_cmap(colorScheme), norm=norm, s=10, marker="o", edgecolors='none', transform=ccrs.PlateCarree())
 
     statString = "Mean={:10.4f} Standard Deviation={:10.4f} Min={:10.4f} Max={:10.4f}  ".format( data.mean(), data.std(ddof=1), data.min(), data.max() )
     plt.title(statString, fontsize=12)
 
     fig.suptitle(title, fontsize=18) 
-    bar = plt.cm.ScalarMappable(cmap=colorScheme, norm=norm)
+    bar = plt.cm.ScalarMappable(cmap = plt.get_cmap(colorScheme), norm=norm)
     bar._A = []
     cbar = plt.colorbar(bar, ax=ax1)
     cbar.set_label(units)
@@ -75,16 +75,16 @@ def plotMapHist(lat, lon, data, title, graphicName, plotRange = None, units='', 
     # come up with normalization for data.
     norm = matplotlib.colors.Normalize(vmin=plotRange[0], vmax=plotRange[1]) #Nomalize color range to match set data range
     # plot scatter plot with data according to colormap and normalization specified
-    ax1.scatter(lon, lat, c=data, cmap = colorScheme, norm=norm, s=2, marker="o", edgecolors='none', transform=ccrs.PlateCarree())
+    ax1.scatter(lon, lat, c=data, cmap = plt.get_cmap(colorScheme), norm=norm, s=2, marker="o", edgecolors='none', transform=ccrs.PlateCarree())
     statString = "Mean={:10.4f} Standard Deviation={:10.4f} Min={:10.4f} Max={:10.4f}  ".format( data.mean(), data.std(ddof=1), data.min(), data.max() )
     ax1.set_title(statString, fontsize=12)
     fig.suptitle(title, fontsize=18) 
-    colorMapForColorbar = plt.cm.ScalarMappable(cmap=colorScheme, norm=norm)
+    colorMapForColorbar = plt.cm.ScalarMappable(cmap = plt.get_cmap(colorScheme), norm=norm)
     colorMapForColorbar._A = []
     # do colorbar first to get the xlims so we can force them with the histogram    
-    cbar = matplotlib.colorbar.ColorbarBase(ax3, cmap=colorScheme, norm=norm, orientation='horizontal')
+    cbar = matplotlib.colorbar.ColorbarBase(ax3, cmap = plt.get_cmap(colorScheme), norm=norm, orientation='horizontal')
     cbar.set_label(units)
-    barlims = cbar.get_clim()
+    barlims = plotRange[0],plotRange[1]
 
     # Get bin count using 'auto' algorithm stolen from numpy private functions 
     binCount = getCountAuto(data)
@@ -113,6 +113,7 @@ def plotMapHist(lat, lon, data, title, graphicName, plotRange = None, units='', 
     ax3Pos = ax3.get_position()
     ax3Pos.y0 = ax3Pos.y0+0.04
     ax3Pos.y1 = ax3Pos.y1+0.04
-    ax3.set_position(ax3Pos)  
+    ax3.set_position(ax3Pos)
+    ax2.get_xaxis().set_visible(False)  
     fig.savefig(graphicName+'.png')
     plt.close(fig)
